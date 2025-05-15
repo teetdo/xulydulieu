@@ -122,24 +122,30 @@ else:
 print("\n--- Bắt đầu Phần 5: Vẽ biểu đồ ---")
 
 if not df_tong_hop.empty:
-    plt.figure(figsize=(10, 6)) 
-    sns.scatterplot(data=df_tong_hop, x='Tổng tương tác', y='Tỉ lệ chia sẻ', hue='Platform')
-    plt.title('Biểu đồ 1: Tổng tương tác và Tỉ lệ chia sẻ') 
-    plt.xlabel('Tổng số tương tác của bài đăng')      
-    plt.ylabel('Tỉ lệ chia sẻ của bài đăng (%)')    
-    plt.grid(True) 
-    plt.legend(title='Nền tảng') 
+    # Tạo figure với 1 hàng và 2 cột
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
 
+    # Biểu đồ 1: Scatter plot
+    sns.scatterplot(data=df_tong_hop, x='Tổng tương tác', y='Tỉ lệ chia sẻ', hue='Platform', ax=ax1)
+    ax1.set_title('Biểu đồ 1: Tổng tương tác và Tỉ lệ chia sẻ')
+    ax1.set_xlabel('Tổng số tương tác của bài đăng')
+    ax1.set_ylabel('Tỉ lệ chia sẻ của bài đăng (%)')
+    ax1.grid(True)
+    ax1.legend(title='Nền tảng')
+
+    # Biểu đồ 2: Bar plot
     tong_tuong_tac_theo_nen_tang = df_tong_hop.groupby('Platform')['Tổng tương tác'].sum().reset_index()
     if not tong_tuong_tac_theo_nen_tang.empty:
-        plt.figure(figsize=(7, 5)) 
-        sns.barplot(data=tong_tuong_tac_theo_nen_tang, x='Platform', y='Tổng tương tác', palette=['orange', 'green', 'purple'])
-        plt.title('Biểu đồ 2: Tổng tương tác của mỗi Nền tảng')
-        plt.xlabel('Nền tảng')
-        plt.ylabel('Tổng số lượt tương tác')
-    
-    plt.show() 
+        sns.barplot(data=tong_tuong_tac_theo_nen_tang, x='Platform', y='Tổng tương tác', ax=ax2, palette=['blue', 'pink', 'red'])
+        ax2.set_title('Biểu đồ 2: Tổng tương tác của mỗi Nền tảng')
+        ax2.set_xlabel('Nền tảng')
+        ax2.set_ylabel('Tổng số lượt tương tác')
 
+    # Điều chỉnh layout để tránh chồng chéo
+    plt.tight_layout()
+
+    # Hiển thị biểu đồ
+    plt.show()
 else:
     print("Không có dữ liệu trong bảng tổng hợp để vẽ biểu đồ.")
 
